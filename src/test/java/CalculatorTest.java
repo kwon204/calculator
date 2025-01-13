@@ -86,6 +86,43 @@ public class CalculatorTest {
     }
 
     @Test
+    public void calculateEmptyStringTest() {
+        String input1 = null;
+        String input2 = "";
+        String input3 = "   ";
+
+        assertThat(cal.calculate(input1)).isEqualTo(0);
+        assertThat(cal.calculate(input2)).isEqualTo(0);
+        assertThat(cal.calculate(input3)).isEqualTo(0);
+    }
+
+    @Test
+    public void calculateStringTest() {
+        String input = "3 + 1 - 1 * 4 / 2";
+        String input2 = "3 + 1 - 1 *   4     /  2   ";
+        String input3 = "1122";
+
+        assertThat(cal.calculate(input)).isEqualTo(6);
+        assertThat(cal.calculate(input2)).isEqualTo(6);
+        assertThat(cal.calculate(input3)).isEqualTo(1122);
+    }
+
+    @Test
+    public void calculateStringExceptionTest() {
+        String input = "3 + 1 -   ";
+        String input2 = "3 + 5 & 1 / 2";
+        String input3 = "3 + a + 1 * 2";
+        String input4 = "2 44 1 - 1";
+        String input5 = "1 / 0";
+
+        assertThatThrownBy(() -> cal.calculate(input)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> cal.calculate(input2)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> cal.calculate(input3)).isInstanceOf(NumberFormatException.class);
+        assertThatThrownBy(() -> cal.calculate(input4)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> cal.calculate(input5)).isInstanceOf(ArithmeticException.class);
+    }
+
+    @Test
     public void subtractTest() {
         int i = 5;
         int j = 4;
@@ -113,5 +150,6 @@ public class CalculatorTest {
         int result = cal.divide(i, j);
 
         assertThat(result).isEqualTo(2);
+        assertThatThrownBy(() -> cal.divide(5, 0)).isInstanceOf(ArithmeticException.class);
     }
 }
