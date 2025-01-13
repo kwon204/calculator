@@ -15,12 +15,22 @@ public class Calculator {
         return i / j;
     }
 
+    int add(String input) {
+        if (input == null || input.isBlank()) {
+            return 0;
+        }
+
+        String[] tokens = input.trim().split("[,:]");
+        int result = 0;
+        for(String token : tokens) {
+            token = token.trim();
+            result += Integer.parseInt(token);
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
-        Calculator cal = new Calculator();
-        System.out.println(cal.add(3, 4));
-        System.out.println(cal.subtract(5, 4));
-        System.out.println(cal.multiply(2, 6));
-        System.out.println(cal.divide(8, 4));
     }
 
 }
